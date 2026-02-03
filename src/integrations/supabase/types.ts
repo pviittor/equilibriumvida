@@ -117,10 +117,44 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      profiles_public: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          name: string | null
+          surname: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          name?: string | null
+          surname?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          name?: string | null
+          surname?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      get_own_profile: {
+        Args: never
+        Returns: {
+          cpf: string
+          created_at: string
+          email: string
+          id: string
+          name: string
+          surname: string
+          updated_at: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

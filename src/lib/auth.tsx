@@ -29,14 +29,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const fetchProfile = async (userId: string) => {
+    // Use secure RPC function to fetch profile - prevents direct PII exposure
     const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
+      .rpc('get_own_profile')
       .maybeSingle();
     
     if (!error && data) {
-      setProfile(data);
+      setProfile(data as Profile);
     }
   };
 
