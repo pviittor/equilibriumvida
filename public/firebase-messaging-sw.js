@@ -1,0 +1,28 @@
+importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js');
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCV9eE2gdrtH0R5xVTc6gIM6rqOEXCO_64",
+  authDomain: "equilibriumvida-ecf03.firebaseapp.com",
+  projectId: "equilibriumvida-ecf03",
+  storageBucket: "equilibriumvida-ecf03.firebasestorage.app",
+  messagingSenderId: "264460301321",
+  appId: "1:264460301321:web:6e6f080dbc007520bff4d8",
+  measurementId: "G-4BGSW1E42P"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage((payload) => {
+  console.log('[firebase-messaging-sw.js] Received background message ', payload);
+  
+  const notificationTitle = payload.notification.title;
+  const notificationOptions = {
+    body: payload.notification.body,
+    icon: '/placeholder.svg'
+  };
+
+  self.registration.showNotification(notificationTitle, notificationOptions);
+});

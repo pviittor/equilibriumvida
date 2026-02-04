@@ -11,6 +11,8 @@ import Cadastro from "./pages/Cadastro";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 
+import { NotificationHandler } from "@/components/NotificationHandler";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -19,6 +21,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
+        <NotificationHandler />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />

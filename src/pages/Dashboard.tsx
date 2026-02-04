@@ -53,18 +53,82 @@ export default function Dashboard() {
   const [reminderTime, setReminderTime] = useState('08:00');
   const [selectedDays, setSelectedDays] = useState<number[]>([1, 2, 3, 4, 5]);
   const [isLoading, setIsLoading] = useState(true);
+  const [notificationPermission, setNotificationPermission] = useState(
+    'Notification' in window ? Notification.permission : 'default'
+  );
 
   useEffect(() => {
     fetchProducts();
     fetchReminders();
-    requestNotificationPermission();
+    // Check permission on load
+    if ('Notification' in window) {
+      setNotificationPermission(Notification.permission);
+    }
   }, []);
+
+  // Check for reminders every minute
+  useEffect(() => {
+    const checkReminders = () => {
+      const now = new Date();
+      const currentDay = now.getDay();
+      const currentHours = now.getHours().toString().padStart(2, '0');
+      const currentMinutes = now.getMinutes().toString().padStart(2, '0');
+      const currentTime = `${currentHours}:${currentMinutes}`;
+
+      reminders.forEach(reminder => {
+        if (
+          reminder.is_active &&
+          reminder.days_of_week.includes(currentDay) &&
+          reminder.reminder_time.startsWith(currentTime)
+        ) {
+          sendNotification(reminder);
+        }
+      });
+    };
+
+    // Calculate delay to sync with next minute
+    const now = new Date();
+    const delay = (60 - now.getSeconds()) * 1000;
+    
+    const timeoutId = setTimeout(() => {
+      checkReminders();
+      const intervalId = setInterval(checkReminders, 60000);
+      return () => clearInterval(intervalId);
+    }, delay);
+
+    return () => clearTimeout(timeoutId);
+  }, [reminders]);
+
+  const sendNotification = (reminder: Reminder) => {
+    if (Notification.permission === 'granted') {
+      // Play a sound if available
+      try {
+        const audio = new Audio('/notification.mp3'); // We might need to add this file or use a default sound approach
+        audio.play().catch(e => console.log('Audio play failed', e));
+      } catch (e) {
+        console.log('Audio not supported');
+      }
+
+      new Notification(`Hora de usar ${reminder.products?.name}`, {
+        body: reminder.products?.instructions || 'Lembrete de saúde',
+        icon: '/placeholder.svg',
+        tag: `reminder-${reminder.id}-${new Date().toISOString().slice(0, 16)}` // Prevent duplicate notifications
+      });
+    }
+  };
 
   const requestNotificationPermission = async () => {
     if ('Notification' in window) {
       const permission = await Notification.requestPermission();
+      setNotificationPermission(permission);
       if (permission === 'granted') {
-        console.log('Notificações habilitadas');
+        toast.success('Notificações habilitadas com sucesso!');
+        // Test notification
+        new Notification('Equilibrium Vida', {
+          body: 'As notificações estão ativas!'
+        });
+      } else {
+        toast.error('É necessário permitir notificações para receber os lembretes');
       }
     }
   };
@@ -245,17 +309,30 @@ export default function Dashboard() {
         </div>
 
         {/* Add Reminder Button */}
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
           <h2 className="text-xl font-serif font-semibold text-foreground">
             Meus Lembretes
           </h2>
-          <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-            <DialogTrigger asChild>
-              <Button className="gradient-primary">
-                <Plus size={20} className="mr-2" />
-                Novo Lembrete
+          
+          <div className="flex gap-2 w-full sm:w-auto">
+            {notificationPermission !== 'granted' && (
+              <Button 
+                onClick={requestNotificationPermission} 
+                variant="outline"
+                className="flex-1 sm:flex-none border-primary text-primary hover:bg-primary/10"
+              >
+                <Bell size={20} className="mr-2" />
+                Ativar Notificações
               </Button>
-            </DialogTrigger>
+            )}
+
+            <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+              <DialogTrigger asChild>
+                <Button className="gradient-primary flex-1 sm:flex-none">
+                  <Plus size={20} className="mr-2" />
+                  Novo Lembrete
+                </Button>
+              </DialogTrigger>
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
                 <DialogTitle className="font-serif">Adicionar Lembrete</DialogTitle>
@@ -323,6 +400,7 @@ export default function Dashboard() {
               </div>
             </DialogContent>
           </Dialog>
+          </div>
         </div>
 
         {/* Reminders List */}
