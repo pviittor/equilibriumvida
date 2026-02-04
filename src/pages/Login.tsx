@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Eye, EyeOff, LogIn, Loader2, Leaf } from 'lucide-react';
+import { Eye, EyeOff, LogIn, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -43,15 +43,15 @@ export default function Login() {
           <div className="glass-card p-8 md:p-10 animate-fade-in">
             <div className="mb-8 text-center">
               <Logo size="lg" className="mb-6 justify-center" />
-              <h1 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-3">
-                Bem-vindo de volta
+              <h1 className="text-3xl md:text-2xl font-serif font-bold text-foreground mb-3">
+                Bem-vindo 
               </h1>
               <p className="text-muted-foreground text-base">
                 Entre na sua conta para gerenciar seus lembretes
               </p>
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-sm font-medium">Email</Label>
                 <Input
@@ -97,13 +97,13 @@ export default function Login() {
                 {isLoading ? (
                   <Loader2 className="animate-spin mr-2" size={20} />
                 ) : (
-                  <LogIn className="mr-2" size={20} />
+                  <LogIn className="mr-1" size={20} />
                 )}
                 Entrar
               </Button>
             </form>
 
-            <div className="mt-8 pt-6 border-t border-border/50 text-center">
+            <div className="mt-2 pt-6 border-t border-border/50 text-center">
               <p className="text-muted-foreground">
                 Não tem uma conta?{' '}
                 <Link
@@ -127,11 +127,6 @@ export default function Login() {
         </div>
         
         <div className="max-w-lg text-center text-primary-foreground animate-slide-up relative z-10">
-          <div className="mb-8 flex justify-center">
-            <div className="w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-              <Leaf className="w-10 h-10 text-white" />
-            </div>
-          </div>
           <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6 leading-tight">
             Sua jornada de saúde começa aqui
           </h2>

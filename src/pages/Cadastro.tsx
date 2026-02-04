@@ -52,7 +52,7 @@ export default function Cadastro() {
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-background via-secondary/30 to-background">
       {/* Left Panel - Decorative */}
-      <div className="hidden lg:flex flex-1 gradient-primary items-center justify-center p-12 relative overflow-hidden">
+      <div className="hidden lg:flex flex-1 gradient-primary items-start justify-center p-12 pt-24 relative overflow-hidden">
         {/* Background decoration */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-32 right-20 w-72 h-72 rounded-full bg-white/20 blur-3xl" />
@@ -60,12 +60,7 @@ export default function Cadastro() {
         </div>
         
         <div className="max-w-lg text-center text-primary-foreground animate-slide-up relative z-10">
-          <div className="mb-8 flex justify-center">
-            <div className="w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-              <Sparkles className="w-10 h-10 text-white" />
-            </div>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6 leading-tight">
+          <h2 className="text-3xl md:text-5xl font-serif font-bold mb-6 leading-tight">
             Transforme sua rotina de saúde
           </h2>
           <p className="text-lg md:text-xl opacity-90 leading-relaxed">
@@ -121,7 +116,7 @@ export default function Cadastro() {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-sm font-medium">Nome</Label>
@@ -238,7 +233,7 @@ export default function Cadastro() {
               </Button>
             </form>
 
-            <div className="mt-8 pt-6 border-t border-border/50 text-center">
+            <div className="mt-6 pt-4 border-t border-border/50 text-center">
               <p className="text-muted-foreground">
                 Já tem uma conta?{' '}
                 <Link
