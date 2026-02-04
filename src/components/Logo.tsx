@@ -21,10 +21,7 @@ export function Logo({ className = '', size = 'md' }: LogoProps) {
       </div>
       <div className="flex flex-col">
         <span className={`${text} font-serif font-bold text-foreground leading-tight`}>
-          Equilibrium
-        </span>
-        <span className="text-xs font-medium text-primary tracking-wider uppercase">
-          Vida & Saúde
+          Equilibrium Vida
         </span>
       </div>
     </div>

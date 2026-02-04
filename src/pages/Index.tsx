@@ -20,11 +20,7 @@ const features = [
     title: 'Notificações em Tempo Real',
     description: 'Receba alertas sonoros e visuais diretamente no seu dispositivo.',
   },
-  {
-    icon: Shield,
-    title: 'Seus Dados Seguros',
-    description: 'Suas informações são protegidas com a mais alta tecnologia de segurança.',
-  },
+ 
 ];
 
 export default function Index() {
@@ -55,11 +51,10 @@ export default function Index() {
               Cuide da sua saúde de forma inteligente
             </div>
             <h1 className="text-4xl md:text-6xl font-serif font-bold text-foreground mb-6 leading-tight">
-              Nunca mais esqueça de{' '}
-              <span className="text-gradient">cuidar de você</span>
+              Nunca mais esqueça de cuidar de você
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Configure lembretes personalizados para seus produtos Chronus21 e transforme 
+              Configure lembretes personalizados para seus produtos e transforme 
               sua rotina de saúde com notificações que funcionam.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -90,7 +85,7 @@ export default function Index() {
               Uma plataforma completa para gerenciar sua rotina de suplementação
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {features.map((feature, index) => (
               <Card
                 key={feature.title}
