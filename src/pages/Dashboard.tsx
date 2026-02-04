@@ -116,17 +116,10 @@ export default function Dashboard() {
 
   const sendNotification = (reminder: Reminder) => {
     if (Notification.permission === 'granted') {
-      // Play a sound if available
-      try {
-        const audio = new Audio('/notification.mp3'); // We might need to add this file or use a default sound approach
-        audio.play().catch(e => console.log('Audio play failed', e));
-      } catch (e) {
-        console.log('Audio not supported');
-      }
-
       new Notification(`Hora de usar ${reminder.products?.name}`, {
         body: reminder.products?.instructions || 'Lembrete de saúde',
         icon: '/placeholder.svg',
+        silent: true, // Solicita notificação silenciosa
         tag: `reminder-${reminder.id}-${new Date().toISOString().slice(0, 16)}` // Prevent duplicate notifications
       });
     }
