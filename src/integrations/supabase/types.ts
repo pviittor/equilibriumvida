@@ -46,6 +46,7 @@ export type Database = {
           cpf: string
           created_at: string
           email: string
+          fcm_token?: string | null
           id: string
           name: string
           surname: string
@@ -64,6 +65,7 @@ export type Database = {
           cpf?: string
           created_at?: string
           email?: string
+          fcm_token?: string | null
           id?: string
           name?: string
           surname?: string

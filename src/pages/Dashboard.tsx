@@ -11,6 +11,7 @@ import { Switch } from '@/components/ui/switch';
 import { Logo } from '@/components/Logo';
 import { useAuth } from '@/lib/auth';
 import { supabase } from '@/integrations/supabase/client';
+import { requestForToken } from '@/integrations/firebase/client';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 
@@ -60,11 +61,25 @@ export default function Dashboard() {
   useEffect(() => {
     fetchProducts();
     fetchReminders();
-    // Check permission on load
-    if ('Notification' in window) {
-      setNotificationPermission(Notification.permission);
-    }
-  }, []);
+    
+    const initNotifications = async () => {
+      if ('Notification' in window && Notification.permission === 'granted') {
+        setNotificationPermission('granted');
+        console.log('Permission already granted, fetching token...');
+        try {
+          const token = await requestForToken();
+          console.log('Token fetched on init:', token ? 'Yes' : 'No');
+          if (token && profile?.id) {
+            saveFcmToken(token);
+          }
+        } catch (error) {
+          console.error('Error fetching token on init:', error);
+        }
+      }
+    };
+    
+    initNotifications();
+  }, [profile?.id]);
 
   // Check for reminders every minute
   useEffect(() => {
@@ -117,19 +132,53 @@ export default function Dashboard() {
     }
   };
 
+  const saveFcmToken = async (token: string) => {
+    if (!profile?.id) {
+      console.log('Profile ID missing, skipping token save');
+      return;
+    }
+    
+    console.log('Saving FCM token for user:', profile.id);
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ fcm_token: token })
+        .eq('id', profile.id);
+        
+      if (error) {
+        console.error('Error saving FCM token to Supabase:', error);
+        toast.error('Erro ao salvar token de notificação');
+      } else {
+        console.log('FCM token saved successfully');
+      }
+    } catch (err) {
+      console.error('Exception saving FCM token:', err);
+    }
+  };
+
   const requestNotificationPermission = async () => {
-    if ('Notification' in window) {
-      const permission = await Notification.requestPermission();
-      setNotificationPermission(permission);
-      if (permission === 'granted') {
+    try {
+      const token = await requestForToken();
+      
+      if (token) {
+        setNotificationPermission('granted');
         toast.success('Notificações habilitadas com sucesso!');
+        
+        if (profile?.id) {
+          await saveFcmToken(token);
+        }
+        
         // Test notification
         new Notification('Equilibrium Vida', {
-          body: 'As notificações estão ativas!'
+          body: 'As notificações estão ativas e sincronizadas!'
         });
       } else {
+        setNotificationPermission('denied');
         toast.error('É necessário permitir notificações para receber os lembretes');
       }
+    } catch (error) {
+      console.error('Error requesting permission:', error);
+      toast.error('Erro ao ativar notificações');
     }
   };
 
