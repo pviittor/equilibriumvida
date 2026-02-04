@@ -17,11 +17,23 @@ const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
+
+  // Se o payload já tem uma notificação, o navegador geralmente exibe automaticamente.
+  // No entanto, se quisermos forçar ou customizar, podemos fazer isso aqui.
+  // IMPORTANTE: Se o payload tiver 'notification', o navegador exibe. Se tiver APENAS 'data', nós exibimos.
   
-  const notificationTitle = payload.notification.title;
+  if (payload.notification) {
+    // O navegador já deve cuidar disso, mas logamos para debug.
+    console.log('Background message has notification payload, browser should display it.');
+    return; 
+  }
+
+  // Se for apenas dados, exibimos manualmente
+  const notificationTitle = payload.data?.title || 'Nova Notificação';
   const notificationOptions = {
-    body: payload.notification.body,
-    icon: '/placeholder.svg'
+    body: payload.data?.body || 'Você tem uma nova mensagem.',
+    icon: '/placeholder.svg', // Use um ícone que existe
+    data: payload.data
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
