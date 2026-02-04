@@ -23,6 +23,9 @@ export function Logo({ className = '', size = 'md' }: LogoProps) {
         <span className={`${text} font-serif font-bold text-foreground leading-tight`}>
           Equilibrium Vida
         </span>
+        <span className="text-xs font-medium text-primary tracking-wider uppercase">
+          Vida & Saúde
+        </span>
       </div>
     </div>
   );

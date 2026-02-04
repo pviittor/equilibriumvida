@@ -44,10 +44,10 @@ export default function Index() {
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 gradient-hero" />
-        <div className="container mx-auto px-4 py-20 md:py-32 relative">
+        <div className="container mx-auto px-4 py-20 md:py-20 relative">
           <div className="max-w-3xl mx-auto text-center animate-fade-in">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <Sparkles size={16} />
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-10">
+              <Sparkles size={18} />
               Cuide da sua saúde de forma inteligente
             </div>
             <h1 className="text-4xl md:text-6xl font-serif font-bold text-foreground mb-6 leading-tight">
