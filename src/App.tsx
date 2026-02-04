@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import TestNotifications from "./pages/TestNotifications";
 
 import { NotificationHandler } from "@/components/NotificationHandler";
 
@@ -35,6 +36,7 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
+            <Route path="/test-notifications" element={<TestNotifications/>} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
